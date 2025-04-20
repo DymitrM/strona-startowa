@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+      <meta charset="utf-8"/>
+	  <title>Strona Startowa</title>
+	  <meta name="description" content="Opis witryny do 150 znaków"/>
+	  <link href="styles — kopia.css" rel="stylesheet"/>
+	  <link rel="Shortcut icon" href="gopnik.png" />
+</head>
+<body>
+<div class="baner">
+<a href="https://www.google.pl/advanced_search?hl=pl-PL&fg=1" target="_blank"><div id="R" class ="klocek">GOOGLE WYSZ ZAW</div></a>
+<a href="https://www.google.pl/imghp?hl=pl"  target="_blank"><div id="G" class ="klocek">GOOGLE GRAFIKA</div></a>
+<a target="_blank" href="https://www.google.pl/maps/preview"><div id="B" class ="klocek">GOOGLE MAPS</div></a>
+<div class ="zegar">
+<div id="zegarek"  ></div>
+<script type="text/javascript">
+function zegar() {
+var data = new Date();
+var godzina = data.getHours();
+var min = data.getMinutes();
+var sek = data.getSeconds();
+ var terazjest = ""+godzina+
+((min<10)?":0":":")+min+
+((sek<10)?":0":":")+sek;
+document.getElementById("zegarek").innerHTML = terazjest;
+setTimeout("zegar()", 1000); }
+zegar();
+</script>
+</div>
+</div>
+<div class ="reklama">
+<a href="https://www.youtube.com" target="_blank"><div id="youtube" class="test">YOUTUBE</div></a>
+<a href="https://www.facebook.com/" target="_blank"><div id="facebook" class="test">FACEBOOK</div></a>
+<a href="https://www.ipko.pl/" target="_blank"><div id="bank" class="test">BANK</div></a>
+<a href="https://www.twitch.tv/" target="_blank"><div id="twitch" class="test">TWITCH</div></a>
+<a href="umkonline\index.html" target="_blank"><div id="umk" class="test">UMK</div></a>
+<a href="https://mail.google.com/mail/u/0/#inbox" target="_blank"><div id="gmail" class="test">GMAIL</div></a>
+<a href="https://drive.google.com/drive/u/0/my-drive" target="_blank"><div  id="dysk" class="test">DYSK</div></a>
+<a href="https://www.olx.pl/" target="_blank"><div id="olx" class="test">OLX</div></a>	
+<a href="https://chat.openai.com/chat" target="_blank"><div  id="chat" class="testa">CHAT_GPT</div></a>
+
+</div>
+</br></br></br>
+<div class ="tekst"><p id="lewy"><font color="white">GOOGLE</font></p>                                                                	
+<div class="link"><form action="https://www.google.pl/search" target="_blank" method="get">
+<input type="text" id="google-input" autocomplete="off" name="q">
+<input type="hidden" name="ie" value="utf-8">
+<input type="submit" id="wgoogle" value=" ">
+</form>
+</div>
+<p id="lewy">YOU<font color="red">TUBE</font></p>
+<div class="link">
+<form action="https://www.youtube.com/results" target="_blank" method="get">
+<input type="text" autocomplete="off" id="youtube-input" name="search_query">
+<input type="submit" id="wyt" value=" ">
+</form>
+</div>
+</div>
+<div class="pogoda">
+  <h2 id="lokalizacja"></h2>
+  <b id="temp"></b><br><br>
+  <b id="warunki"></b>
+</div>
+
+<script>
+  const apiKey = 'afa4721afb6c4e1a853185924252004'; // <--- Podmień na swój klucz z weatherapi.com
+
+  // 1. Pobierz lokalizację GPS z przeglądarki
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        // 2. Pobierz pogodę na podstawie współrzędnych
+        const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&lang=pl`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById('lokalizacja').textContent = `Lokalizacja: ${data.location.name}`;
+            document.getElementById('temp').textContent = `Temperatura: ${data.current.temp_c}°C`;
+            document.getElementById('warunki').textContent = `Warunki: ${data.current.condition.text}`;
+          })
+          .catch((error) => {
+            console.error("Błąd pobierania danych pogodowych:", error);
+            document.getElementById('lokalizacja').textContent = "Nie udało się pobrać pogody.";
+          });
+      },
+      (error) => {
+        console.error("Błąd lokalizacji:", error);
+        document.getElementById('lokalizacja').textContent = "Nie zezwolono na lokalizację.";
+      }
+    );
+  } else {
+    document.getElementById('lokalizacja').textContent = "Twoja przeglądarka nie obsługuje geolokalizacji.";
+  }
+</script>
+
+<script>
+    // Funkcja do ustawienia wspólnych efektów hover i focus
+    function setupHoverAndFocus(inputId, submitId) {
+        const input = document.getElementById(inputId);
+        const submit = document.getElementById(submitId);
+
+        // Sprawdź, czy elementy istnieją
+        if (!input || !submit) {
+            console.error('Nie znaleziono elementów.');
+            return;
+        }
+
+        // Zapisz pierwotne style
+        const originalInputBorderColor = getComputedStyle(input).borderColor;
+        const originalInputBackgroundColor = getComputedStyle(input).backgroundColor;
+        const originalSubmitBorderBottomColor = getComputedStyle(submit).borderBottomColor;
+        const originalSubmitColor = getComputedStyle(submit).color;
+        const originalSubmitBackgroundColor = getComputedStyle(submit).backgroundColor;
+
+        // Funkcja do zmiany stylów podczas hover lub focus
+        function changeStylesOnHoverOrFocus() {
+            input.style.borderColor = 'purple';
+            input.style.backgroundColor = 'rgba(127, 0, 255, 0.1)';
+            submit.style.borderBottomColor = 'purple';
+            submit.style.color = 'purple';
+            submit.style.backgroundColor = 'rgba(127, 0, 255, 0.1)';
+        }
+
+        // Funkcja przywracająca pierwotne style
+        function resetStyles() {
+            input.style.borderColor = originalInputBorderColor;
+            input.style.backgroundColor = originalInputBackgroundColor;
+            submit.style.borderBottomColor = originalSubmitBorderBottomColor;
+            submit.style.color = originalSubmitColor;
+            submit.style.backgroundColor = originalSubmitBackgroundColor;
+        }
+
+        // Dodajemy eventy hover na oba elementy
+        input.addEventListener('mouseover', changeStylesOnHoverOrFocus);
+        input.addEventListener('mouseout', () => {
+            if (document.activeElement !== input) {
+                resetStyles(); // Jeśli nie mamy focusu, wracamy do pierwotnych stylów
+            }
+        });
+        submit.addEventListener('mouseover', changeStylesOnHoverOrFocus);
+        submit.addEventListener('mouseout', () => {
+            if (document.activeElement !== input) {
+                resetStyles(); // Jeśli nie mamy focusu, wracamy do pierwotnych stylów
+            }
+        });
+
+        // Dodajemy eventy focus i blur dla input
+        input.addEventListener('focus', () => {
+            input.style.backgroundColor = 'purple'; // Zmienia tło na zielone po kliknięciu w input
+            submit.style.backgroundColor = 'purple'; // Zmienia tło przycisku submit
+            changeStylesOnHoverOrFocus(); // Zmienia style submit, gdy input jest w focus
+        });
+
+        input.addEventListener('blur', resetStyles); // Przywróć oryginalne style po kliknięciu poza input
+    }
+
+    // Ustawienia dla Google
+    setupHoverAndFocus('google-input', 'wgoogle');
+
+    // Ustawienia dla YouTube
+    setupHoverAndFocus('youtube-input', 'wyt');
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
